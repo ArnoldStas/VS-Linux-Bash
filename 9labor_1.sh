@@ -37,6 +37,11 @@ Registruotis() {
     echo
     read -rp "Create USERNAME: " username
     #echo "$username"
+    if [[ "$username" == '' ]]
+    then
+        echo "Vartotojas negali turėti tuščių vardų!"
+        return
+    fi
 
     if grep -qiw "$username" "paskyros.txt";
     then
