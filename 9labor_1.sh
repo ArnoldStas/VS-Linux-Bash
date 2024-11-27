@@ -38,7 +38,7 @@ Registruotis() {
     read -rp "Create USERNAME: " username
     #echo "$username"
 
-    if grep -qoi "$username" "paskyros.txt";
+    if grep -qiw "$username" "paskyros.txt";
     then
         echo -e "Toks vartotojas jau yra!\n"
         return
@@ -56,7 +56,7 @@ Prisijungti() {
     read -rp "Enter USERNAME: " username
     #echo "$username"
 
-    if ! grep -qoi "$username" "paskyros.txt";
+    if ! grep -qiw "$username" "paskyros.txt";
     then
         echo -e "Tokio vartotojo nėra!\n"
         return
@@ -65,7 +65,7 @@ Prisijungti() {
     read -rp "Enter PASSWORD: " password
     #echo "$password"
 
-    if grep -qoi "$username $password" "paskyros.txt";
+    if grep -qiw "$username $password" "paskyros.txt";
     then
         echo -e "PASSWORD teisingas!\n"
         Filtravimas
@@ -78,13 +78,13 @@ Filtravimas() {
 
     MaxFile() {
         echo
-        ls -lh | awk 'NR > 1 {if ($5 > max) {max = $5; file = $9}} END {print file, max, "B"}'
+        ls -lh | grep '^-' | awk 'NR > 1 {if ($5 > max) {max = $5; file = $9}} END {print file, max, "B"}'
         echo
     }
 
     EmptyFile() {
         echo
-        ls -lh | awk '$5 == 0 {print $9}'
+        ls -l | grep '^-' | awk '$5 == 0 {print $9}'
         echo
     }
 
@@ -108,6 +108,7 @@ Filtravimas() {
 }
 
 #touch paskyros.txt
+
 select item in "Registruotis" "Prisijungti" "Darbo pabaiga"
 do
     case $REPLY in
